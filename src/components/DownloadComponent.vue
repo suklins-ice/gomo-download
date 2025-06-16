@@ -1,6 +1,6 @@
 <template>
   <div v-if="config.ios && config.android">
-    <div class="header">← KYC CENTER</div>
+    <div class="header">KYC CENTER</div>
 
     <div class="tab-btn-group">
       <button class="tab-btn" :class="{ active: activeTab === 'ios' }" @click="activeTab = 'ios'">
@@ -11,31 +11,22 @@
       </button>
     </div>
 
-    <!-- iOS Section -->
-    <div v-if="activeTab === 'ios'" class="px-3">
-      <div v-for="(item, index) in config.ios.history.slice().reverse()" :key="index" class="version-card">
+    <div class="px-3">
+      <div v-for="(item, index) in getActiveHistory()" :key="index" class="version-card">
         <h5>{{ item.version }}</h5>
         <div class="date">{{ item.date }}</div>
         <ul>
           <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
         </ul>
-        <button v-if="item.ipa" :href="item.ipa" class="btn btn-outline-success btn-sm btn-download">⬇ DemoApp.ipa</button>
-        <button v-if="item.sdk" :href="item.sdk" class="btn btn-outline-success btn-sm btn-download">⬇ xcframework.zip</button>
-        <button v-if="item.tencentSdk" :href="item.tencentSdk" class="btn btn-outline-success btn-sm btn-download">⬇ tencent xcframework.zip</button>
-      </div>
-    </div>
 
-    <!-- Android Section -->
-    <div v-if="activeTab === 'android'" class="px-3">
-      <div v-for="(item, index) in config.android.history.slice().reverse()" :key="index" class="version-card">
-        <h5>{{ item.version }}</h5>
-        <div class="date">{{ item.date }}</div>
-        <ul>
-          <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
-        </ul>
-        <button v-if="item.apk" :href="item.apk" class="btn btn-outline-success btn-sm btn-download">⬇ DemoApp.apk</button>
-        <button v-if="item.aar" :href="item.aar" class="btn btn-outline-success btn-sm btn-download">⬇ aar.zip</button>
-        <button v-if="item.tencentAar" :href="item.tencentAar" class="btn btn-outline-success btn-sm btn-download">⬇ tencent aar.zip</button>
+        <!-- ปุ่มดาวน์โหลด -->
+        <a v-for="(path, dIndex) in item.downloads"
+          :key="dIndex"
+          :href="path"
+          :download="path.split('/').pop()"
+          class="btn btn-outline-success btn-sm btn-download">
+          ⬇ {{ path.split('/').pop() }}
+        </a>
       </div>
     </div>
   </div>
@@ -57,6 +48,13 @@ export default {
   },
   created() {
     this.config = DownloadJSON;
+  },
+  methods: {
+    getActiveHistory() {
+      return this.activeTab === 'ios'
+        ? this.config.ios.history.slice().reverse()
+        : this.config.android.history.slice().reverse();
+    }
   }
 };
 </script>

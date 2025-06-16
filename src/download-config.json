@@ -7,9 +7,11 @@
         "details": [
           "Fix numberBackCardTextField for uppercase"
         ],
-        "ipa": "/files/test.zip",
-        "sdk": "/files/test.zip",
-        "tencentSdk": "/files/test.zip"
+        "downloads": [
+          "/files/DemoApp.ipa",
+          "/files/xcframework.zip",
+          "/files/tencent-xcframework.zip"
+        ]
       }
     ]
   },
@@ -21,9 +23,11 @@
         "details": [
           "Rollback to v1/verify/card without Pentest"
         ],
-        "apk": "/files/test.zip",
-        "aar": "/files/test.zip",
-        "tencentAar": "/files/test.zip"
+        "downloads": [
+          "/files/DemoApp.apk",
+          "/files/aar.zip",
+          "/files/tencent-aar.zip"
+        ]
       }
     ]
   }
