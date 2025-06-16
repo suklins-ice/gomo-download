@@ -1,131 +1,119 @@
 <template>
-  <div class="container-fluid" v-if="config.ios && config.android">
-    <h1 class="text-center text-white text-bolder">eKYC Downloader</h1>
-    <div class="list-group">
-      <div class="download-section">
-        <h2 class="text-white">Download iOS</h2>
-        <img src="../assets/icons8-ios-logo-50.png" alt="iOS Icon" class="icon">
-        <h3 class="text-white">SDK</h3>
-        <ul class="text-white">
-          <li v-if="latestIosSdk">
-            <a :href="latestIosSdk.link" class="list-group-item list-group-item-action">Version {{ latestIosSdk.version }}</a>
-          </li>
+  <div v-if="config.ios && config.android">
+    <div class="header">← KYC CENTER</div>
+
+    <div class="tab-btn-group">
+      <button class="tab-btn" :class="{ active: activeTab === 'ios' }" @click="activeTab = 'ios'">
+        <i class="bi bi-apple"></i> iOS
+      </button>
+      <button class="tab-btn" :class="{ active: activeTab === 'android' }" @click="activeTab = 'android'">
+        <i class="bi bi-android2"></i> Android
+      </button>
+    </div>
+
+    <!-- iOS Section -->
+    <div v-if="activeTab === 'ios'" class="px-3">
+      <div v-for="(item, index) in config.ios.history.slice().reverse()" :key="index" class="version-card">
+        <h5>{{ item.version }}</h5>
+        <div class="date">{{ item.date }}</div>
+        <ul>
+          <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
         </ul>
-        <h3 class="text-white">APK</h3>
-        <ul class="text-white">
-          <li v-if="latestIosApk">
-            <a :href="latestIosApk.link" class="list-group-item list-group-item-action">Version {{ latestIosApk.version }}</a>
-          </li>
-        </ul>
-        
-        <h3 class="text-white">Details</h3>
-        <ul class="text-white">
-          <li v-for="(item, index) in config.ios.history.slice(0, 3)" :key="index" v-html="item.replace(/\\n/g, '<br>')"></li>
-        </ul>
-        <router-link v-if="config.ios.history.length > 3" to="/history-more" class="btn btn-light mt-2">More</router-link>
+        <button v-if="item.ipa" :href="item.ipa" class="btn btn-outline-success btn-sm btn-download">⬇ DemoApp.ipa</button>
+        <button v-if="item.sdk" :href="item.sdk" class="btn btn-outline-success btn-sm btn-download">⬇ xcframework.zip</button>
+        <button v-if="item.tencentSdk" :href="item.tencentSdk" class="btn btn-outline-success btn-sm btn-download">⬇ tencent xcframework.zip</button>
       </div>
-      
-      <div class="download-section">
-        <h2 class="text-white">Download Android</h2>
-        <img src="../assets/icons8-android-os-50.png" alt="Android Icon" class="icon">
-        <h3 class="text-white">SDK</h3>
-        <ul class="text-white">
-          <li v-if="latestAndroidSdk">
-            <a :href="latestAndroidSdk.link" class="list-group-item list-group-item-action">Version {{ latestAndroidSdk.version }}</a>
-          </li>
+    </div>
+
+    <!-- Android Section -->
+    <div v-if="activeTab === 'android'" class="px-3">
+      <div v-for="(item, index) in config.android.history.slice().reverse()" :key="index" class="version-card">
+        <h5>{{ item.version }}</h5>
+        <div class="date">{{ item.date }}</div>
+        <ul>
+          <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
         </ul>
-        <h3 class="text-white">APK</h3>
-        <ul class="text-white">
-          <li v-if="latestAndroidApk">
-            <a :href="latestAndroidApk.link" class="list-group-item list-group-item-action">Version {{ latestAndroidApk.version }}</a>
-          </li>
-        </ul>
-        
-        <h3 class="text-white">Details</h3>
-        <ul class="text-white">
-          <li v-for="(item, index) in config.android.history.slice(0, 3)" :key="index" v-html="item.replace(/\\n/g, '<br>')"></li>
-        </ul>
-        <router-link v-if="config.android.history.length > 3" to="/history-more" class="btn btn-light mt-2">More</router-link>
+        <button v-if="item.apk" :href="item.apk" class="btn btn-outline-success btn-sm btn-download">⬇ DemoApp.apk</button>
+        <button v-if="item.aar" :href="item.aar" class="btn btn-outline-success btn-sm btn-download">⬇ aar.zip</button>
+        <button v-if="item.tencentAar" :href="item.tencentAar" class="btn btn-outline-success btn-sm btn-download">⬇ tencent aar.zip</button>
       </div>
     </div>
   </div>
-  <div v-else class="text-center text-white">
-    Loading...
-  </div>
+
+  <div v-else class="text-center p-5">Loading...</div>
 </template>
 
 <script>
-// import axios from 'axios';
+import 'bootstrap-icons/font/bootstrap-icons.css'
 const DownloadJSON = require('../download-config.json');
+
 export default {
   name: 'DownloadComponent',
   data() {
     return {
-      config: {}
+      config: {},
+      activeTab: 'ios'
     };
   },
   created() {
-    this.loadConfig();
-  },
-  computed: {
-    latestIosSdk() {
-      return this.config.ios.sdk[this.config.ios.sdk.length - 1];
-    },
-    latestIosApk() {
-      return this.config.ios.apk[this.config.ios.apk.length - 1];
-    },
-    latestAndroidSdk() {
-      return this.config.android.sdk[this.config.android.sdk.length - 1];
-    },
-    latestAndroidApk() {
-      return this.config.android.apk[this.config.android.apk.length - 1];
-    }
-  },
-  methods: {
-    async loadConfig() {
-      try {
-        this.config = DownloadJSON;
-      } catch (error) {
-        console.error('Error loading config:', error);
-      }
-    }
+    this.config = DownloadJSON;
   }
 };
 </script>
 
 <style scoped>
-html, body {
-  height: 100%;
-  margin: 0;
+.header {
+  background-color: #8cc63f;
+  color: white;
+  padding: 1rem 1.5rem;
+  font-weight: bold;
+  font-size: 1.5rem;
 }
-#app {
-  height: 100%;
-}
-.container-fluid {
-  background-color: #2e8b57; /* สีเขียว */
-  padding: 20px;
-  border-radius: 10px;
-  width: 100%;
-  height: 100%;
+
+.tab-btn-group {
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
+  gap: 1rem;
+  margin: 1.5rem 0;
 }
-.download-section {
-  margin-bottom: 20px;
+
+.tab-btn {
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 50px;
+  border: 1px solid #8cc63f;
+  background: white;
+  color: #8cc63f;
+  font-weight: 600;
+  transition: all 0.3s;
 }
-.icon {
-  width: 50px;
-  height: 50px;
-  margin-bottom: 10px;
-}
-.list-group-item {
-  background-color: #333; /* สีดำ */
+
+.tab-btn.active {
+  background: #8cc63f;
   color: white;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
-.text-white {
-  color: white;
+
+.version-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  padding: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.version-card h5 {
+  margin-bottom: 0.25rem;
+}
+
+.version-card .date {
+  color: gray;
+  font-size: 0.875rem;
+  margin-bottom: 0.5rem;
+}
+
+.btn-download {
+  margin-right: 0.5rem;
+  margin-top: 0.5rem;
 }
 </style>
