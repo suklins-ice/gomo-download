@@ -1,4 +1,4 @@
-# torpedo-document
+# gomo-download
 
 ## Project setup
 ```
