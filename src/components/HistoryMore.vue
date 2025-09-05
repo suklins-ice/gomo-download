@@ -47,7 +47,7 @@ export default {
 
 <style scoped>
 .container-fluid {
-  background-color: #2e8b57; /* สีเขียว */
+  background-color: #FFC0CB; /* สีเขียว */
   padding: 20px;
   border-radius: 10px;
   width: 100%;
