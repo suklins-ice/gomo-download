@@ -13,10 +13,10 @@ module.exports = defineConfig({
     // กำหนด WebSocket สำหรับ HMR ให้เข้าถึงจาก domain จริง
     client: {
       webSocketURL: {
-        hostname: "gomo.mimotech.org", // ชื่อ domain ที่ browser ใช้
+        protocol: "wss",                // เปลี่ยนจาก ws เป็น wss
+        hostname: "gomo.mimotech.org",  // domain ของคุณ
         port: 8080,
-        protocol: "ws"
+        pathname: "/ws"
       }
-    }
   }
 });
