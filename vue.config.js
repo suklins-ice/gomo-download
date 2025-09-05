@@ -3,14 +3,11 @@ const { defineConfig } = require('@vue/cli-service');
 module.exports = defineConfig({
   transpileDependencies: true,
   productionSourceMap: false,
-  publicPath: '/downloader/', // path สำหรับ production
-
+  publicPath: '/downloader/',
   devServer: {
-    allowedHosts: "all",   // ปิดการเช็ค host header
-    host: "0.0.0.0",       // ให้ container หรือ network อื่นเข้าถึงได้
-    port: 8080,            // พอร์ต dev server
-
-    // กำหนด WebSocket สำหรับ HMR ให้เข้าถึงจาก domain จริง
+    allowedHosts: "all",
+    host: "0.0.0.0",
+    port: 8080,
     client: {
       webSocketURL: {
         protocol: "wss",                // เปลี่ยนจาก ws เป็น wss
@@ -18,5 +15,6 @@ module.exports = defineConfig({
         port: 8080,
         pathname: "/ws"
       }
+    }
   }
 });
