@@ -62,7 +62,7 @@ export default {
 
 <style scoped>
 .header {
-  background-color: #8cc63f;
+  background-color: #FFC0CB;
   color: white;
   padding: 1rem 1.5rem;
   font-weight: bold;
@@ -80,15 +80,15 @@ export default {
   padding: 0.75rem 1.5rem;
   font-size: 1rem;
   border-radius: 50px;
-  border: 1px solid #8cc63f;
+  border: 1px solid #FFC0CB;
   background: white;
-  color: #8cc63f;
+  color: #FFC0CB;
   font-weight: 600;
   transition: all 0.3s;
 }
 
 .tab-btn.active {
-  background: #8cc63f;
+  background: #FFC0CB;
   color: white;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
 }
