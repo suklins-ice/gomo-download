@@ -22,11 +22,12 @@
       <!-- ปุ่มดาวน์โหลด -->
       <a v-for="(path, dIndex) in item.downloads"
         :key="dIndex"
-        :href="activeTab =  "path"
+        :href="path"
         target="_blank"
         class="btn btn-outline-success btn-sm btn-download">
         ⬇ {{ activeTab === 'ios' ? 'Install' : path.split('/').pop() }}
       </a>
+
       </div>
     </div>
   </div>
