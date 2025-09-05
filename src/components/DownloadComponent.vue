@@ -1,6 +1,6 @@
 <template>
   <div v-if="config.ios && config.android">
-    <div class="header">GOMO CENTER</div>
+    <div class="header">GOMO DOWNLOADER</div>
 
     <div class="tab-btn-group">
       <button class="tab-btn" :class="{ active: activeTab === 'ios' }" @click="activeTab = 'ios'">
