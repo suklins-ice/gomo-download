@@ -22,7 +22,7 @@
       <!-- ปุ่มดาวน์โหลด -->
       <a v-for="(path, dIndex) in item.downloads"
         :key="dIndex"
-        :href="activeTab === 'ios' ? `itms-services://?action=download-manifest&url=${window.location.origin}${path}` : path"
+        :href="activeTab =  "path"
         target="_blank"
         class="btn btn-outline-success btn-sm btn-download">
         ⬇ {{ activeTab === 'ios' ? 'Install' : path.split('/').pop() }}
