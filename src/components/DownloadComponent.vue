@@ -19,14 +19,14 @@
           <li v-for="(detail, i) in item.details" :key="i">{{ detail }}</li>
         </ul>
 
-        <!-- ปุ่มดาวน์โหลด -->
-        <a v-for="(path, dIndex) in item.downloads"
-          :key="dIndex"
-          :href="path"
-          :download="path.split('/').pop()"
-          class="btn btn-outline-success btn-sm btn-download">
-          ⬇ {{ path.split('/').pop() }}
-        </a>
+      <!-- ปุ่มดาวน์โหลด -->
+      <a v-for="(path, dIndex) in item.downloads"
+        :key="dIndex"
+        :href="activeTab === 'ios' ? `itms-services://?action=download-manifest&url=${window.location.origin}${path}` : path"
+        target="_blank"
+        class="btn btn-outline-success btn-sm btn-download">
+        ⬇ {{ activeTab === 'ios' ? 'Install' : path.split('/').pop() }}
+      </a>
       </div>
     </div>
   </div>
